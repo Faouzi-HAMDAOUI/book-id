@@ -1,32 +1,69 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <Navbar v-if="!isAuth" />
+    <NavbarUser v-if="isAuth" />
+    <v-main class="mx-4">
+      <router-view></router-view>
+    </v-main>
+    <!-- <Foothers v-if="!isAuth" /> -->
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-}
+<script>
+import Navbar from "./views/Navbar.vue";
+import NavbarUser from "./views/NavbarUser.vue";
+// import Foothers from "./views/Foothers.vue";
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+import firebase from "firebase";
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+// const booksRef = db.collection('users');
+import { db } from "./main";
+
+export default {
+  name: "App",
+  components: {
+    Navbar,
+    NavbarUser
+    // Foothers
+  },
+
+  data: () => ({
+    drawer: null,
+    user: null,
+    myUser: [],
+    isAuth: false,
+    uid: ""
+  }),
+
+  created() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.user = user;
+        this.isAuth = true;
+        this.uid = user.uid;
+      } else {
+        this.user = null;
+        this.isAuth = false;
+      }
+    });
+  },
+
+  methods: {
+    getUser: function() {
+      db.collection("users")
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            let newUser = doc.data();
+            newUser.id = doc.id;
+            if (newUser.uid == this.uid) {
+              this.myUser.push(newUser);
+            }
+          });
+        });
+      return this.myUser;
+    }
+  }
+};
+</script>
