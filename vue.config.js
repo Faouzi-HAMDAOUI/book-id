@@ -1,5 +1,9 @@
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ]
+    "transpileDependencies": [
+        "vuetify"
+    ]
 }
+module.exports = {
+    publicPath: process.env.NODE_ENV === "production" ? "/book-id/" : "/",
+    transpileDependencies: ["vuetify"],
+};
