@@ -95,6 +95,12 @@ const routes = [{
             import ("../views/Book.vue"),
     },
     {
+        path: "/user/:id",
+        name: "User",
+        component: () =>
+            import ("../views/User.vue"),
+    },
+    {
         path: "/br",
         name: "br",
         component: () =>
