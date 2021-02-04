@@ -20,57 +20,56 @@
         </v-row>
       </v-col>
       <v-col class="d-flex" md="2" sm="4" xs="2">
-        
         <v-combobox
           v-model="Genre"
           :items="items2"
           label="Genre"
-          multiple         
+          multiple
           filled
         ></v-combobox>
       </v-col>
       <v-col class="d-flex" md="2" sm="4" xs="2">
-          <v-combobox
+        <v-combobox
           :items="items3"
           label="Disponibilité"
-          multiple         
+          multiple
           filled
         ></v-combobox>
       </v-col>
       <v-col class="d-flex" md="2" sm="4" xs="2">
         <!-- <v-select :items="items" filled label="Plus de filtres"></v-select> -->
-        <v-btn depressed filled x-large class="text-capitalize mt-1" @click="filtre = !filtre">
-      Plus de filtres...
-    </v-btn>
+        <v-btn
+          depressed
+          filled
+          x-large
+          class="text-capitalize mt-1"
+          @click="filtre = !filtre"
+        >
+          Plus de filtres...
+        </v-btn>
       </v-col>
     </v-row>
-  <v-row v-if="filtre"
-  >
-   <v-col class="d-flex" md="4" sm="4" xs="2">
-          <v-combobox
-          :items="items4"
-          label="Note"
-          multiple         
-          filled
-        ></v-combobox>
+    <v-row v-if="filtre">
+      <v-col class="d-flex" md="4" sm="4" xs="2">
+        <v-combobox :items="items4" label="Note" multiple filled></v-combobox>
       </v-col>
-       <v-col class="d-flex" md="4" sm="4" xs="2">
-          <v-combobox
+      <v-col class="d-flex" md="4" sm="4" xs="2">
+        <v-combobox
           :items="items5"
           label="Thématique"
-          multiple         
+          multiple
           filled
         ></v-combobox>
       </v-col>
-       <v-col class="d-flex" md="4" sm="4" xs="2">
-          <v-combobox
+      <v-col class="d-flex" md="4" sm="4" xs="2">
+        <v-combobox
           :items="items6"
           label="Distance"
-          multiple         
+          multiple
           filled
         ></v-combobox>
       </v-col>
-  </v-row>
+    </v-row>
     <!-- <h2>{{ searchResult }}</h2> -->
     <v-container>
       <v-row align="center">
@@ -79,7 +78,14 @@
         </v-col>
       </v-row>
       <v-row dense>
-        <v-col class="mb-16" v-for="(book, i) in listBooks" :key="book.id" md="3" sm="6" xs="12">
+        <v-col
+          class="mb-16"
+          v-for="(book, i) in listBooks"
+          :key="book.id"
+          md="3"
+          sm="6"
+          xs="12"
+        >
           <v-hover v-slot="{ hover }">
             <v-card
               class="mx-auto"
@@ -94,20 +100,29 @@
                     class=" transition-fast-in-fast-out black darken-3 v-card--reveal display-5 white--text"
                     style="height: 100%;"
                   >
-                   <h2 class="mt-2 ml-4">  {{ book.title }}</h2>
-                    
-                    
+                    <h2 class="mt-2 ml-4">{{ book.title }}</h2>
+
                     <p class="ml-4"><slot></slot> {{ book.auteur }}</p>
-                    <v-chip v-if="book.genre[0]" class="ml-4  white--text mt-1" color="deep-purple darken-1">
-                  {{ book.genre[0] }}
-                </v-chip>
-                <v-chip v-if="book.genre[1]" class="ml-4 white--text mt-1" color="purple darken-1">
-                  {{ book.genre[1] }}
-                </v-chip>
-                 <v-row v-if="book.disponible == 'disponible'">
-                   <v-icon class="ml-6 mt-4" color="white">mdi-check-box-outline</v-icon>
-                     <h3 class="white--tex mt-4">Disponible</h3>
-                   </v-row>
+                    <v-chip
+                      v-if="book.genre[0]"
+                      class="ml-4  white--text mt-1"
+                      color="deep-purple darken-1"
+                    >
+                      {{ book.genre[0] }}
+                    </v-chip>
+                    <v-chip
+                      v-if="book.genre[1]"
+                      class="ml-4 white--text mt-1"
+                      color="purple darken-1"
+                    >
+                      {{ book.genre[1] }}
+                    </v-chip>
+                    <v-row v-if="book.disponible == 'disponible'">
+                      <v-icon class="ml-6 mt-4" color="white"
+                        >mdi-check-box-outline</v-icon
+                      >
+                      <h3 class="white--tex mt-4">Disponible</h3>
+                    </v-row>
                     <v-btn
                       class="mt-16 ml-14 "
                       outlined
@@ -115,7 +130,7 @@
                       Link
                       :to="{ name: 'Book', params: { id: book.id } }"
                     >
-                     <span class="white--text">en savoir plus...</span>
+                      <span class="white--text">en savoir plus...</span>
                     </v-btn>
                     <p class="mt-16 ml-3" align="bottom">
                       <v-icon color="white">mdi-map-marker</v-icon>
@@ -126,31 +141,34 @@
               </v-img>
               <v-list-item>
                 <v-list-item-icon>
-                  
-                  <v-icon 
-                  v-if="
-                  book.links[0].idUser != user.uid || 
-                  (book.links[1] && book.links[1].idUser != user.uid) ||
-                  (book.links[2] &&book.links[2].idUser != user.uid) ||
-                  (book.links[3] && book.links[3].idUser != user.uid) ||
-                  (book.links[4] && book.links[4].idUser != user.uid)
-                  "
-                   @click="addLik(book.id, i)" color="black" large >
-                   mdi-heart-outline
-                   </v-icon>
-                  <v-icon  
-                  v-if="
-                  book.links[0].idUser == user.uid || 
-                   (book.links[1] && book.links[1].idUser == user.uid) ||
-                  (book.links[2] &&book.links[2].idUser == user.uid) ||
-                  (book.links[3] && book.links[3].idUser == user.uid) ||
-                  (book.links[4] && book.links[4].idUser == user.uid)
-                  " 
-                  color="red" large >
-                  mdi-heart
-                  </v-icon> 
-                 
-                   <!-- <v-icon  @click="addLik(book.id, i)" color="black" large >mdi-heart-outline</v-icon> -->
+                  <v-icon
+                    v-if="
+                      book.links[0].idUser === user.uid ||
+                        (book.links[1] && book.links[1].idUser === user.uid) ||
+                        (book.links[2] && book.links[2].idUser === user.uid) ||
+                        (book.links[3] && book.links[3].idUser === user.uid) ||
+                        (book.links[4] && book.links[4].idUser === user.uid) ||
+                        (book.links[5] && book.links[5].idUser === user.uid) ||
+                        (book.links[6] && book.links[6].idUser === user.uid) ||
+                        (book.links[7] && book.links[7].idUser === user.uid) ||
+                        (book.links[8] && book.links[8].idUser === user.uid)
+                    "
+                    color="red"
+                    large
+                    @click="deleteLik(book.id, i)"
+                  >
+                    mdi-heart
+                  </v-icon>
+                  <v-icon
+                    v-else
+                    @click="addLik(book.id, i)"
+                    color="black"
+                    large
+                  >
+                    mdi-heart-outline
+                  </v-icon>
+
+                  <!-- <v-icon  @click="addLik(book.id, i)" color="black" large >mdi-heart-outline</v-icon> -->
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-rating
@@ -171,6 +189,25 @@
     </v-container>
 
     <!--  --------------------------- End list of Books --------------------------- -->
+    <!--  --------------------------- confirm message --------------------------- -->
+    <v-row justify="center">
+      <v-dialog v-model="confMsg" persistent max-width="500px">
+        <v-card max-width="500px">
+          <v-toolbar color="light-green darken-1" dark>
+            <v-toolbar-title>Confirmation</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="confMsg = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar>
+
+          <div class="text-center">
+            <h2>{{ messageConf }}</h2>
+          </div>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    <!--  --------------------------- End confirm message --------------------------- -->
   </div>
 </template>
 
@@ -181,23 +218,25 @@ import { db, booksRef } from "../main";
 export default {
   components: {},
   data: () => ({
+    confMsg: false,
+    messageConf: "",
     disp: true,
     filtre: false,
     Genre: "",
     searchResult: "",
     listBooks: [],
     searcheBook: [],
-    myListeBooks: [],
     liked: false,
-   myLik: [],
-   lik: {},
+    myLik: [],
+    lik: {},
     book: "",
     items: ["Croissant", "Décroissant", "Date"],
     items2: ["Science-fiction", "Drame", "Fantastique", "Romance", "Policier"],
     items3: ["Disponible", "Non-disponible"],
-    items4: ["1 étoile", "2 étoiles","3 étoiles","4 étoiles","5 étoiles"],
+    items4: ["1 étoile", "2 étoiles", "3 étoiles", "4 étoiles", "5 étoiles"],
     items5: ["Science", "Cuisine"],
     items6: ["< 5Km", "< 10Km", "< 15Km", "< 20Km"]
+    // --------------------- for favoris ------------------------------------
   }),
   created() {
     firebase.auth().onAuthStateChanged(user => {
@@ -221,30 +260,25 @@ export default {
             let book = doc.data();
             book.id = doc.id;
             //this.liked = book.links;
-           
-            for (var i = 0, i_len = book.links.length; i < i_len ; i++) {
-                if (book.links.idUser == this.user.uid) {
-                  this.liked = true;
-                }else
-                {
-                   this.liked = false;
-                }
-              }
+
+            // for (var i = 0, i_len = book.links.length; i < i_len; i++) {
+            //   if (book.links.idUser == this.user.uid) {
+            //     this.liked = true;
+            //   } else {
+            //     this.liked = false;
+            //   }
+            // }
             this.listBooks.push(book);
-            if (book.idUser == this.user.uid) {
-              this.myListeBooks.push(book);
-              
-            }
           });
         });
       this.searcheBook = this.listBooks;
     },
 
     addLik: function(id, i) {
-     this.lik = { idUser: this.user.uid };
-     this.myLik = this.listBooks[i].links;
+      this.lik = { idUser: this.user.uid };
+      this.myLik = this.listBooks[i].links;
       this.myLik.push(this.lik);
-      
+
       booksRef
         .doc(id)
         .update({ links: this.myLik }, { merge: true })
@@ -254,26 +288,37 @@ export default {
         .catch(error => {
           console.error("Error updating document: ", error);
         });
+      this.messageConf = "Le livre a été ajouté à vos favoris";
+      this.confMsg = true;
+      setTimeout(() => {
+        return (this.confMsg = false);
+      }, 4000);
     },
 
-    // deleteLik: function(id) {
-    //   this.myLik = this.book.liks;
-    //   for (var i = 0; i < this.myLik.length; i++) {
-    //     if ((this.myLik.idUser = this.uid)) {
-    //       this.myLik.splice(i + 1, 1);
-    //       this.liked = false;
-    //     }
-    //   }
-    //   booksRef
-    //     .doc(id)
-    //     .update({ liks: this.myLik }, { merge: true })
-    //     .then(() => {
-    //       console.log("Document successfully updated!");
-    //     })
-    //     .catch(error => {
-    //       console.error("Error updating document: ", error);
-    //     });
-    // },
+    deleteLik: function(id, i) {
+      this.myLik = this.listBooks[i].links;
+      for (let i = 0, i_len = this.myLik.length; i < i_len; i++) {
+        if (this.myLik[i].idUser == this.user.uid) {
+          this.myLik.splice(i, 1);
+        }
+      }
+      booksRef
+        .doc(id)
+        .update({ links: this.myLik }, { merge: true })
+        .then(() => {
+          console.log("Document successfully updated!");
+        })
+        .catch(error => {
+          console.error("Error updating document: ", error);
+        });
+      this.messageConf = "Le livre a été retiré sur la listes de vos favoris";
+      this.confMsg = true;
+      setTimeout(() => {
+        return (this.confMsg = false);
+      }, 4000);
+    },
+
+    // --------------------- for favoris ------------------------------------
 
     searchBook: function(book) {
       this.searcheBook = book
@@ -293,9 +338,7 @@ export default {
       //      .filter((myBook) => {
       //         myBook.user.toLowerCase().includes(book.toLowerCase());
       //      })
-    },
-
-   
+    }
   },
 
   watch: {
@@ -334,10 +377,9 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  
 }
 .myColor {
-    background-color: #2F0392;
-    color: white;
-  }
+  background-color: #2f0392;
+  color: white;
+}
 </style>
