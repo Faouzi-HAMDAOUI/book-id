@@ -64,7 +64,7 @@
             <td>Gérard darmana</td>
             <td>Axel</td>
             <td>Villeurbanne</td>
-            <td>à définir</td>
+            <td>20 fév 2021</td>
           </tr>
           <tr>
             <td>
@@ -75,7 +75,7 @@
             <td>Françoin Holand</td>
             <td>Cloé</td>
             <td>Dijon</td>
-            <td>03 fév 2021</td>
+            <td>à définir</td>
           </tr>
           <tr v-for="book in myListeBooks" :key="book.id">
             <td
