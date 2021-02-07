@@ -18,20 +18,20 @@
                   accept="image/*"
                 />
                 <v-fab-transition>
-              <v-btn
-                class="mt-16 ml-8"
-                color="white"
-                dark
-                small
-                @click="click1"
-                absolute
-                top
-                left
-                fab
-              >
-                <v-icon color="orange">mdi-pencil</v-icon>
-              </v-btn>
-            </v-fab-transition>
+                  <v-btn
+                    class="mt-16 ml-8"
+                    color="white"
+                    dark
+                    small
+                    @click="click1"
+                    absolute
+                    top
+                    left
+                    fab
+                  >
+                    <v-icon color="orange">mdi-pencil</v-icon>
+                  </v-btn>
+                </v-fab-transition>
               </v-col>
 
               <v-col md="8" sm="12" xs="12">
@@ -69,9 +69,8 @@
                       @click="select"
                       @click:close="remove(item)"
                     >
-                      <strong >{{ item }}</strong
+                      <strong>{{ item }}</strong
                       >&nbsp;
-                     
                     </v-chip>
                   </template>
                 </v-combobox>
@@ -91,24 +90,33 @@
               </template>
             </v-row>
             <v-row dense>
-              <v-col  md="6" sm="12" xs="12">
-                <label ><h2 class="mb-2 ml-4">Etat du livre</h2></label>
+              <v-col md="6" sm="12" xs="12">
+                <label><h2 class="mb-2 ml-4">Etat du livre</h2></label>
                 <v-select
-                class="ml-3"
+                  class="ml-3"
                   v-model="etats"
                   :items="items"
                   filled
-                  label="Sléctionné un Etat"
+                  label="Sélectionner un état"
                 ></v-select>
               </v-col>
 
-              <v-col  md="6" sm="12" xs="12">
-                <label ><h2 class="ml-10">Donner une note</h2></label>
-                <v-rating class="ml-6" color="#FEB546"  background-color="grey lighten-1" filled v-model="note" hover length="5" size="50"></v-rating>
+              <v-col md="6" sm="12" xs="12">
+                <label><h2 class="ml-10">Donner une note</h2></label>
+                <v-rating
+                  class="ml-6"
+                  color="#FEB546"
+                  background-color="grey lighten-1"
+                  filled
+                  v-model="note"
+                  hover
+                  length="5"
+                  size="50"
+                ></v-rating>
               </v-col>
             </v-row>
             <template>
-              <v-container  fluid>
+              <v-container fluid>
                 <label><h2 class="mb-2">Mon avis sur le livre</h2></label>
                 <v-textarea
                   v-model="avis"
@@ -133,10 +141,14 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="text-capitalize" >
+          <v-btn class="text-capitalize">
             Annuler
           </v-btn>
-          <v-btn color="#2F0392" class="white--text text-capitalize mr-10" @click="create">
+          <v-btn
+            color="#2F0392"
+            class="white--text text-capitalize mr-10"
+            @click="create"
+          >
             Valider
           </v-btn>
         </v-card-actions>
@@ -146,38 +158,24 @@
     <!--  --------------------------- End Add Books --------------------------- -->
 
     <!--  --------------------------- confirm message --------------------------- -->
-<v-row justify="center">
-    <v-dialog
-      v-model="confMsg"
-      persistent
-     max-width="500px"
-    >
-      
-  <v-card
-   max-width="500px" 
-  >
-    <v-toolbar
-      color="light-green darken-1"
-      dark
-    >
-      <v-toolbar-title>Confirmation</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon
-      @click="confMsg = false"
-      >
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-    </v-toolbar>
+    <v-row justify="center">
+      <v-dialog v-model="confMsg" persistent max-width="500px">
+        <v-card max-width="500px">
+          <v-toolbar color="light-green darken-1" dark>
+            <v-toolbar-title>Confirmation</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="confMsg = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar>
 
           <div class="text-center">
-           <h2> votre livre à été ajouter avec succès!</h2>
-         </div>
-    
-  </v-card>
-
-    </v-dialog>
-  </v-row>
-<!--  --------------------------- End confirm message --------------------------- -->
+            <h2>Votre livre a été ajouté avec succès !</h2>
+          </div>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    <!--  --------------------------- End confirm message --------------------------- -->
   </div>
 </template>
 <script>
@@ -188,8 +186,8 @@ export default {
     confMsg: false,
     myUser: [],
     genre: ["Science-fiction"],
-    genres: ["Drame", "Fantastique", "Romance", "Policier","Science-fiction"],
-    items: ["Bonne", "Trés bonne", "Moyenne", "Pas térrible"],
+    genres: ["Drame", "Fantastique", "Romance", "Policier", "Science-fiction"],
+    items: ["Très bon", "Bon", "Moyen", "Mauvais"],
     img1: "https://via.placeholder.com/300",
     avis: "",
     title: "",
@@ -201,8 +199,7 @@ export default {
     ville: "",
     idUser: "",
     nameUser: "",
-    disponible: "disponible",
-
+    disponible: "disponible"
   }),
   created: function() {
     // check auth
@@ -264,9 +261,9 @@ export default {
           console.log(response);
           this.confMsg = true;
 
-           setTimeout(() => {
-              return (this.confMsg = false);
-           }, 4000);
+          setTimeout(() => {
+            return (this.confMsg = false);
+          }, 4000);
           (this.avis = ""),
             (this.title = ""),
             (this.auteur = ""),

@@ -143,7 +143,7 @@
                 <v-list-item-icon>
                   <v-icon
                     v-if="
-                      book.links[0].idUser === user.uid ||
+                      (book.links[0] && book.links[0].idUser === user.uid) ||
                         (book.links[1] && book.links[1].idUser === user.uid) ||
                         (book.links[2] && book.links[2].idUser === user.uid) ||
                         (book.links[3] && book.links[3].idUser === user.uid) ||
@@ -218,6 +218,7 @@ import { db, booksRef } from "../main";
 export default {
   components: {},
   data: () => ({
+    msgFiltre: "Plus de filtres",
     confMsg: false,
     messageConf: "",
     disp: true,
@@ -311,7 +312,7 @@ export default {
         .catch(error => {
           console.error("Error updating document: ", error);
         });
-      this.messageConf = "Le livre a été retiré sur la listes de vos favoris";
+      this.messageConf = "Le livre a été retiré sur la liste de vos favoris";
       this.confMsg = true;
       setTimeout(() => {
         return (this.confMsg = false);

@@ -72,7 +72,7 @@
     <v-row class="ml-16">
       <v-card class="mb-6 mr-2">
         <v-row>
-          <v-col md="2">
+          <v-col md="3" sm="12" xs="12">
             <img
               class="mt-2 ml-2"
               src="https://www.sortiesdvd.com/itunesimages/film/13102.jpg"
@@ -80,7 +80,7 @@
               width="200"
             />
           </v-col>
-          <v-col md="7" class="ml-5">
+          <v-col md="6" sm="12" xs="12" class="ml-5">
             <h1 class="mt-4">J'aime çeu les enquêtes</h1>
             <p>
               <v-icon>mdi-account-supervisor</v-icon> 253 membres . Groupe
@@ -93,7 +93,7 @@
             </p>
             <p>Dernière activité: il y a 9h</p>
           </v-col>
-          <v-col md="2">
+          <v-col md="2" sm="12" xs="12">
             <v-btn x-large class="ma-2 text-capitalize mt-12" outlined>
               Voir plus...
             </v-btn>
@@ -110,7 +110,7 @@
 
       <v-card class="mb-6 mr-2">
         <v-row>
-          <v-col md="2">
+          <v-col md="3" sm="12" xs="12">
             <img
               class="mt-2 ml-2"
               src="http://lepetitcoach.com/wp-content/uploads/2014/12/vivelavie.jpg"
@@ -118,7 +118,7 @@
               width="200"
             />
           </v-col>
-          <v-col md="7" class="ml-5">
+          <v-col md="6" sm="12" xs="12" class="ml-5">
             <h1 class="mt-4">La vie c'est bien, la mort c'est pas ouf</h1>
             <p>
               <v-icon>mdi-account-supervisor</v-icon> 87 membres . Groupe privé
@@ -130,7 +130,7 @@
             </p>
             <p>Dernière activité: il y a 1j</p>
           </v-col>
-          <v-col md="2">
+          <v-col md="2" sm="12" xs="12">
             <v-btn x-large class="ma-2 text-capitalize mt-12" outlined>
               Voir plus...
             </v-btn>

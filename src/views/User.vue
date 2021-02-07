@@ -10,7 +10,7 @@
           alt="John"
         >
         </v-img>
-        <p class="mt-10">Avis des utilisateurs:</p>
+        <p class="mt-10">Avis des utilisateurs: (8)</p>
         <p>
           <v-rating
             value="4"
@@ -20,8 +20,7 @@
             readonly
             size="18"
           >
-          </v-rating
-          >(8)
+          </v-rating>
         </p>
       </v-col>
       <v-col md="9" class="justify-center">
@@ -33,13 +32,30 @@
 
         <h4 class="mt-10">Bibliothèque:</h4>
         <h1>
-          <span color="#2F0392">{{ nbLivre }} Livre</span>
+          <span color="#2F0392">{{ nbLivre }} Livres</span>
         </h1>
-        <v-btn x-large class="ma-2 text-capitalize" outlined color="#2F0392">
+        <v-btn
+          v-if="myID != $route.params.id"
+          x-large
+          class="ma-2 text-capitalize"
+          outlined
+          color="#2F0392"
+        >
           <v-icon class="mr-3" large>mdi-message-processing</v-icon>
           Envoyer un message
         </v-btn>
         <v-btn
+          v-if="myID == $route.params.id"
+          x-large
+          class="ma-2 text-capitalize"
+          outlined
+          color="#2F0392"
+        >
+          <v-icon class="mr-3" large>mdi-brush</v-icon>
+          Modifier mon profil
+        </v-btn>
+        <v-btn
+          v-if="myID != $route.params.id"
           align="bottom"
           x-large
           class="ma-2 text-capitalize ml-16"
@@ -48,7 +64,12 @@
           <v-icon class="mr-3" large>mdi-cancel</v-icon>
           Bloquer le profil
         </v-btn>
-        <v-btn x-large class="ma-2 text-capitalize " outlined>
+        <v-btn
+          v-if="myID != $route.params.id"
+          x-large
+          class="ma-2 text-capitalize "
+          outlined
+        >
           <v-icon
             class="mr-3"
             large
@@ -206,30 +227,29 @@
                 <v-list-item-icon>
                   <v-icon
                     v-if="
-                      book.links[0].idUser != user.uid ||
-                        (book.links[1] && book.links[1].idUser != user.uid) ||
-                        (book.links[2] && book.links[2].idUser != user.uid) ||
-                        (book.links[3] && book.links[3].idUser != user.uid) ||
-                        (book.links[4] && book.links[4].idUser != user.uid)
+                      (book.links[0] && book.links[0].idUser === user.uid) ||
+                        (book.links[1] && book.links[1].idUser === user.uid) ||
+                        (book.links[2] && book.links[2].idUser === user.uid) ||
+                        (book.links[3] && book.links[3].idUser === user.uid) ||
+                        (book.links[4] && book.links[4].idUser === user.uid) ||
+                        (book.links[5] && book.links[5].idUser === user.uid) ||
+                        (book.links[6] && book.links[6].idUser === user.uid) ||
+                        (book.links[7] && book.links[7].idUser === user.uid) ||
+                        (book.links[8] && book.links[8].idUser === user.uid)
                     "
+                    color="red"
+                    large
+                    @click="deleteLik(book.id, i)"
+                  >
+                    mdi-heart
+                  </v-icon>
+                  <v-icon
+                    v-else
                     @click="addLik(book.id, i)"
                     color="black"
                     large
                   >
                     mdi-heart-outline
-                  </v-icon>
-                  <v-icon
-                    v-if="
-                      book.links[0].idUser == user.uid ||
-                        (book.links[1] && book.links[1].idUser == user.uid) ||
-                        (book.links[2] && book.links[2].idUser == user.uid) ||
-                        (book.links[3] && book.links[3].idUser == user.uid) ||
-                        (book.links[4] && book.links[4].idUser == user.uid)
-                    "
-                    color="red"
-                    large
-                  >
-                    mdi-heart
                   </v-icon>
 
                   <!-- <v-icon  @click="addLik(book.id, i)" color="black" large >mdi-heart-outline</v-icon> -->
@@ -253,6 +273,26 @@
     </v-container>
 
     <!--  --------------------------- End list of Books --------------------------- -->
+
+    <!--  --------------------------- confirm message --------------------------- -->
+    <v-row justify="center">
+      <v-dialog v-model="confMsg" persistent max-width="500px">
+        <v-card max-width="500px">
+          <v-toolbar color="light-green darken-1" dark>
+            <v-toolbar-title>Confirmation</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="confMsg = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar>
+
+          <div class="text-center">
+            <h2>{{ messageConf }}</h2>
+          </div>
+        </v-card>
+      </v-dialog>
+    </v-row>
+    <!--  --------------------------- End confirm message --------------------------- -->
   </div>
 </template>
 
@@ -263,6 +303,9 @@ import { db, booksRef } from "../main";
 export default {
   components: {},
   data: () => ({
+    confMsg: false,
+    messageConf: "",
+    myID: "",
     myUser: [],
     nbLivre: 0,
     disp: true,
@@ -287,6 +330,7 @@ export default {
       if (user) {
         this.user = user;
         this.email = user.email;
+        this.myID = user.uid;
       } else {
         this.user = null;
       }
@@ -351,27 +395,35 @@ export default {
         .catch(error => {
           console.error("Error updating document: ", error);
         });
+      this.messageConf = "Le livre a été ajouté à vos favoris";
+      this.confMsg = true;
+      setTimeout(() => {
+        return (this.confMsg = false);
+      }, 4000);
     },
 
-    // deleteLik: function(id) {
-    //   this.myLik = this.book.liks;
-    //   for (var i = 0; i < this.myLik.length; i++) {
-    //     if ((this.myLik.idUser = this.uid)) {
-    //       this.myLik.splice(i + 1, 1);
-    //       this.liked = false;
-    //     }
-    //   }
-    //   booksRef
-    //     .doc(id)
-    //     .update({ liks: this.myLik }, { merge: true })
-    //     .then(() => {
-    //       console.log("Document successfully updated!");
-    //     })
-    //     .catch(error => {
-    //       console.error("Error updating document: ", error);
-    //     });
-    // },
-
+    deleteLik: function(id, i) {
+      this.myLik = this.listBooks[i].links;
+      for (let i = 0, i_len = this.myLik.length; i < i_len; i++) {
+        if (this.myLik[i].idUser == this.user.uid) {
+          this.myLik.splice(i, 1);
+        }
+      }
+      booksRef
+        .doc(id)
+        .update({ links: this.myLik }, { merge: true })
+        .then(() => {
+          console.log("Document successfully updated!");
+        })
+        .catch(error => {
+          console.error("Error updating document: ", error);
+        });
+      this.messageConf = "Le livre a été retiré sur la liste de vos favoris";
+      this.confMsg = true;
+      setTimeout(() => {
+        return (this.confMsg = false);
+      }, 4000);
+    },
     searchBook: function(book) {
       this.searcheBook = book
         ? this.listBooks.filter(myBook => {

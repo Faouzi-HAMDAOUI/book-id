@@ -93,11 +93,7 @@
             <v-container>
               <v-row>
                 <v-col md="10" sm="10" xs="12">
-                  <v-text-field
-                    label="Ecrivez un message..."
-                    v-model="message"
-                    @keyup.enter="sendChat"
-                  >
+                  <v-text-field label="Ecrivez un message..." v-model="message">
                   </v-text-field>
                 </v-col>
                 <v-col md="2" sm="2" xs="2">

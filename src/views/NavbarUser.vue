@@ -26,7 +26,8 @@
       <v-list >
 
         <v-list-item class="mr-4">
-          <v-list-item-title><v-btn class="text-capitalize" @click="logOut">
+          <v-list-item-title><v-btn class="text-capitalize" link
+            :to="{ name: 'User', params: { id: this.myId } }">
            Mon profil
         </v-btn></v-list-item-title>
         </v-list-item>

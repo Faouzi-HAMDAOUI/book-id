@@ -1,7 +1,7 @@
 <template>
   <div class="homeuser">
     <!--  --------------------------- list of Books --------------------------- -->
-    <v-row >
+    <v-row>
       <v-col md="6" sm="12" xs="4">
         <v-row>
           <v-col md="10" sm="10" xs="10">
@@ -25,65 +25,109 @@
       <v-col class="d-flex" md="2" sm="4" xs="2">
         <v-select :items="items3" filled label="Disponibilité"></v-select>
       </v-col>
-      
     </v-row>
     <!-- <h2>{{ searchResult }}</h2> -->
 
     <!-- ------------------ la liste de mes livre a gérer --------------------- -->
-    
-  <v-simple-table
-    fixed-header
-    
-  >
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">
-           <h2>Statut</h2>
-          </th>
-          <th class="text-left">
-            <h2>Titre</h2>
-          </th>
-           <th class="text-left">
-            <h2>Auteur</h2>
-          </th>
-           <th class="text-left">
-            <h2>Prêteur</h2>
-          </th>
-           <th class="text-left">
-            <h2>Adresse</h2>
-          </th>
-           <th class="text-left">
-             <h2>Date de retour</h2>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="book in myListeBooks"
-          :key="book.id"
-          
-        >
-          <td v-if="book.disponible == 'prêté' || book.disponible == 'Demandé' "  >
-            <v-icon v-if="book.disponible == 'prêté' " color="green" class="mr-2" large>mdi-flag</v-icon>
-            <v-icon v-if="book.disponible == 'Demandé' " color="#FEB546" class="mr-2" large>mdi-flag</v-icon>
-            Emprunté
+
+    <v-simple-table fixed-header>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">
+              <h2>Statut</h2>
+            </th>
+            <th class="text-left">
+              <h2>Titre</h2>
+            </th>
+            <th class="text-left">
+              <h2>Auteur</h2>
+            </th>
+            <th class="text-left">
+              <h2>Prêteur</h2>
+            </th>
+            <th class="text-left">
+              <h2>Adresse</h2>
+            </th>
+            <th class="text-left">
+              <h2>Date de retour</h2>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <v-icon color="green" class="mr-2" large>mdi-flag</v-icon>
+              Emprunté
             </td>
-          <td v-if="book.disponible == 'prêté' || book.disponible == 'Demandé' " >{{ book.title }}</td>
-          <td v-if="book.disponible == 'prêté' || book.disponible == 'Demandé' " >{{ book.auteur }}</td>
-          <td v-if="book.disponible == 'prêté' || book.disponible == 'Demandé' " >{{ book.nameUser }}</td>
-          <td v-if="book.disponible == 'prêté' || book.disponible == 'Demandé' " >{{ book.ville }}</td>
-          <td v-if="book.disponible == 'prêté'" >03 fév 2021</td>
-          <td v-if="book.disponible == 'Demandé'" >à définir</td>
-        </tr>
-        <tr class="text-center" width="1000"><td></td><td></td><td><p class="font-weight-light" color="grey lighten-2primary">Fin de la liste</p> </td><td></td><td></td><td></td>
-
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
-
-   
+            <td>Le procés du jour</td>
+            <td>Gérard darmana</td>
+            <td>Axel</td>
+            <td>Villeurbanne</td>
+            <td>à définir</td>
+          </tr>
+          <tr>
+            <td>
+              <v-icon color="#FEB546" class="mr-2" large>mdi-flag</v-icon>
+              Demandé
+            </td>
+            <td>La nuit sacré</td>
+            <td>Françoin Holand</td>
+            <td>Cloé</td>
+            <td>Dijon</td>
+            <td>03 fév 2021</td>
+          </tr>
+          <tr v-for="book in myListeBooks" :key="book.id">
+            <td
+              v-if="book.disponible == 'prêté' || book.disponible == 'Demandé'"
+            >
+              <p v-if="book.disponible == 'prêté'">
+                <v-icon color="green" class="mr-2" large>mdi-flag</v-icon>
+                Emprunté
+              </p>
+              <p v-if="book.disponible == 'Demandé'">
+                <v-icon color="#FEB546" class="mr-2" large>mdi-flag</v-icon>
+                Demandé
+              </p>
+            </td>
+            <td
+              v-if="book.disponible == 'prêté' || book.disponible == 'Demandé'"
+            >
+              {{ book.title }}
+            </td>
+            <td
+              v-if="book.disponible == 'prêté' || book.disponible == 'Demandé'"
+            >
+              {{ book.auteur }}
+            </td>
+            <td
+              v-if="book.disponible == 'prêté' || book.disponible == 'Demandé'"
+            >
+              {{ book.nameUser }}
+            </td>
+            <td
+              v-if="book.disponible == 'prêté' || book.disponible == 'Demandé'"
+            >
+              {{ book.ville }}
+            </td>
+            <td v-if="book.disponible == 'prêté'">03 fév 2021</td>
+            <td v-if="book.disponible == 'Demandé'">à définir</td>
+          </tr>
+          <tr class="text-center" width="1000">
+            <td></td>
+            <td></td>
+            <td>
+              <p class="font-weight-light" color="grey lighten-2primary">
+                Fin de la liste
+              </p>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
 
     <!--  --------------------------- End list of Books --------------------------- -->
   </div>

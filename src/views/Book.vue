@@ -9,9 +9,29 @@
       <!-- -----------------Ma premier colone (la ou j'affiche mon image)--------------- -->
       <v-col md="4" class="justify-center">
         <v-img height="400" :src="book.photo"></v-img>
-        <h2 class="mb-2 mt-4">Propriétaire</h2>
 
-        <v-card>
+        <h2 class="ml-1">Infos supplémentaires</h2>
+        <v-row>
+          <v-icon v-if="book.disponible == 'prêté'" class="ml-3 mt-6"
+            >mdi-close-circle</v-icon
+          >
+          <v-icon v-if="book.disponible == 'disponible'" class="ml-3 mt-6"
+            >mdi-check-circle</v-icon
+          >
+
+          <h4 class=" mt-6">{{ book.disponible }}</h4>
+        </v-row>
+
+        <h3 class=" mt-3" align="bottom">
+          <v-icon>mdi-map-marker</v-icon>
+          {{ book.ville }}
+        </h3>
+
+        <h4 class="ml-1 mt-6">
+          Donation : <span class="red--text"> Indisponible au don</span>
+        </h4>
+        <h2 class="mb-2 mt-4">Propriétaire</h2>
+        <v-card mt-8>
           <v-list three-line>
             <v-list-item>
               <v-list-item-avatar>
@@ -40,18 +60,6 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <h3 class=" mt-3" align="bottom">
-          <v-icon>mdi-map-marker</v-icon>
-          {{ book.ville }}
-        </h3>
-        <h2 class="mt-7 ml-1">Infos supplémentaires</h2>
-        <v-row>
-          <v-icon class="ml-3 mt-6">mdi-check-box-outline</v-icon>
-          <h4 class=" mt-6">{{ book.disponible }}</h4>
-        </v-row>
-        <h4 class="ml-1 mt-6">
-          Donnation : <span class="red--text"> Indisponsable au don</span>
-        </h4>
       </v-col>
       <!-- ----------------- End Ma premier colone (la ou j'affiche mon image)--------------- -->
 
@@ -74,8 +82,8 @@
             <v-icon> mdi-flag</v-icon>
             Réserver
           </v-btn>
-          <v-icon @click="showBook(book)" x-large color="red">
-            mdi-cards-heart
+          <v-icon @click="showBook(book)" x-large color="black">
+            mdi-heart-outline
           </v-icon>
         </p>
         <p>{{ book.resume }}</p>
@@ -90,6 +98,20 @@
         <!-- ---------------------------------- Mes commentaires--------------------------------- -->
         <h2 class="mt-8">Commentaires</h2>
         <v-form ref="form">
+          <v-row>
+            <v-col md="3">Ajouter une note : </v-col>
+            <v-col md="4">
+              <v-rating
+                value="0"
+                color="amber"
+                dense
+                half-increments
+                readonly
+                size="20"
+              >
+              </v-rating>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col md="10" sm="10" xs="12">
               <v-text-field
@@ -171,8 +193,8 @@
 
           <div class="text-center">
             <h2>
-              Votre demande à bien été prise en compte, vous serez contacté
-              prochainement par son propriétaire!
+              Votre demande a bien été prise en compte, vous serez contacté
+              prochainement par son propriétaire !
             </h2>
           </div>
         </v-card>
@@ -396,7 +418,7 @@ export default {
         .add(post)
         .then(response => {
           console.log(response);
-          alert("le livre a été rajouter dans vos favoris");
+          alert("Le livre a été ajouté dans vos favoris");
         })
         .catch(err => {
           console.log(err);
@@ -440,7 +462,7 @@ export default {
         idEmeteur: this.myId,
         idRecepteur: this.idRec,
         msg:
-          "Bonjour, je suis intéressé par votre livre, et j'aimerais savoir si je peux l'emprunt",
+          "Bonjour, je suis intéressé par votre livre, et j'aimerais savoir si je peux l'emprunter ?",
         created: this.date
       }),
         this.getMyMessages();

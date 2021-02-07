@@ -53,7 +53,7 @@
           </v-col>
           <v-col md="2">
             <v-avatar class="mt-3" size="62" color="orange">
-              <v-icon @click="sendMessage(book)" dark>
+              <v-icon @click="sendMessage(book, i)" dark>
                 mdi-flag
               </v-icon>
             </v-avatar>
@@ -62,13 +62,11 @@
 
           <v-col md="2">
             <v-avatar class="mt-3 mr-10 ml-10" size="62" color="orange">
-              <!-- <v-icon @click="showBook(book)" dark>
-                mdi-cards-heart
-              </v-icon> -->
-              <v-icon
+              
+               <v-icon
                 dark
                 v-if="
-                  book.links[0].idUser === myId ||
+                  (book.links[0] &&  book.links[0].idUser === myId) ||
                     (book.links[1] && book.links[1].idUser === myId) ||
                     (book.links[2] && book.links[2].idUser === myId) ||
                     (book.links[3] && book.links[3].idUser === myId) ||
@@ -84,7 +82,8 @@
               </v-icon>
               <v-icon dark v-else @click="addLik(book.id, i)">
                 mdi-cards-heart
-              </v-icon>
+              </v-icon> 
+              
             </v-avatar>
             <p>Ajouter à mes favoris</p>
           </v-col>
@@ -183,6 +182,7 @@ export default {
           snapshot.forEach(doc => {
             let newUser = doc.data();
             newUser.id = doc.id;
+
             if (newUser.idUser == this.myId) {
               this.myUser.push(newUser);
             }
@@ -201,6 +201,14 @@ export default {
     },
 
     //-------------------------------- favoris ----------------------
+    // addFavoris(i) {
+    //   this.messageConf = "Le livre a été ajouté à vos favoris";
+    //   this.confMsg = true;
+    //   setTimeout(() => {
+    //     return (this.confMsg = false);
+    //   }, 4000);
+    //   this.listBooks.splice(i, 1);
+    // },
 
     addLik: function(id, i) {
       this.lik = { idUser: this.myId };
@@ -221,6 +229,7 @@ export default {
       setTimeout(() => {
         return (this.confMsg = false);
       }, 4000);
+      this.listBooks.splice(i, 1);
     },
 
     deleteLik: function(id, i) {
@@ -230,6 +239,7 @@ export default {
           this.myLik.splice(i, 1);
         }
       }
+
       booksRef
         .doc(id)
         .update({ links: this.myLik }, { merge: true })
@@ -240,67 +250,6 @@ export default {
           console.error("Error updating document: ", error);
         });
       this.messageConf = "Le livre a été retiré sur la listes de vos favoris";
-      this.confMsg = true;
-      setTimeout(() => {
-        return (this.confMsg = false);
-      }, 4000);
-    },
-
-    getallFavoris() {
-      db.collection("favoris")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            let newfavoris = doc.data();
-            newfavoris.id = doc.id;
-
-            this.allfavoris.push(newfavoris);
-          });
-        });
-      return this.allfavoris;
-    },
-    showBook(book) {
-      this.photo = book.photo;
-      this.avis = book.avis;
-      this.title = book.title;
-      this.auteur = book.auteur;
-      this.note = book.note;
-      this.etats = book.etats;
-      this.resume = book.resume;
-      this.nameUser = book.nameUser;
-      this.idUser = this.myId;
-      this.ville = book.ville;
-      this.disponible = book.disponible;
-      setTimeout(() => {
-        this.addFavoris();
-      }, 1000);
-    },
-    addFavoris() {
-      this.getallFavoris();
-      const post = {
-        photo: this.photo,
-        avis: this.avis,
-        title: this.title,
-        auteur: this.auteur,
-        note: this.note,
-        etats: this.etats,
-        resume: this.resume,
-        nameUser: this.nameUser,
-        idUser: this.myId,
-        ville: this.ville,
-        disponible: this.disponible
-      };
-
-      db.collection("favoris")
-        .add(post)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
-      this.messageConf = "Le livre a été ajouté à vos favoris";
       this.confMsg = true;
       setTimeout(() => {
         return (this.confMsg = false);
@@ -322,7 +271,7 @@ export default {
       return this.allMessages;
     },
 
-    sendMessage(book) {
+    sendMessage(book, i) {
       this.date = new Date().toISOString().substr(0, 19);
       //this.getMyMessages();
       (this.newMsg = {
@@ -334,7 +283,8 @@ export default {
           "Bonjour, je suis intéressé par votre livre, et j'aimerais savoir si je peux l'emprunter ?",
         created: this.date
       }),
-        this.getMyMessages();
+        this.listBooks.splice(i, 1);
+      this.getMyMessages();
       setTimeout(() => {
         this.msgg = this.allMessages[0];
         this.msgg.push(this.newMsg);

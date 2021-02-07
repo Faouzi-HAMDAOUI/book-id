@@ -45,7 +45,7 @@
           <v-hover
             v-slot="{ hover }"
             v-if="
-              book.links[0].idUser === myId ||
+              (book.links[0] && book.links[0].idUser === myId) ||
                 (book.links[1] && book.links[1].idUser === myId) ||
                 (book.links[2] && book.links[2].idUser === myId) ||
                 (book.links[3] && book.links[3].idUser === myId) ||
